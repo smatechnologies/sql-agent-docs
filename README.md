@@ -1,4 +1,4 @@
-# SMA OpCon Windows Agent Docs
+# SMA OpCon SQL Agent Docs
 
 This repository contains the content behind the SMA OpCon SQL Agent documentation hosted at <https://help.smatechnologies.com/opcon/agents/sql>.
 
