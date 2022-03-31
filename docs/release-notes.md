@@ -1,5 +1,13 @@
 # Release notes
 
+## SQL Agent 20.7.0
+
+2022 April
+
+:white_check_mark: **SQLAG-94**: Fixed an issue in SQL Agent where a job completion on SQL Server side was not always communicated back to the OpCon side.
+
+:white_check_mark: **SQLAG-93**: Fixed an issue in SQL Agent where an Oracle job failed if it had "Other Options" specified.
+
 ## SQL Agent 20.6.0
 
 2021 November
