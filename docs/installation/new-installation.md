@@ -9,7 +9,7 @@ installation.
 :::tip Example
 MSSQL would need either SQL Server Management Studio or SQLCMD.exe installed.
 Oracle would need SQLcl.
-
+:::
 
 ## Install the SQL Agent
 
