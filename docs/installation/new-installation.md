@@ -3,6 +3,14 @@
 If the SQL Agent has not been installed on the machine, then follow these procedures for the first
 installation.
 
+## Prerequisites
+1. The machine will need to have either the management studio for thier database installed, or that databases command line program.  
+
+:::tip Example
+MSSQL would need either SQL Server Management Studio or SQLCMD.exe installed.
+Oracle would need SQLcl.
+
+
 ## Install the SQL Agent
 
 1. Log in to the Windows machine as a Local Administrator.
