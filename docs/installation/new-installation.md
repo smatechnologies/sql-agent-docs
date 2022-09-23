@@ -7,9 +7,11 @@ installation.
 1. The machine will need to have either the management studio for thier database installed, or that databases command line program.  
 
 :::tip Example
+
 MSSQL would need either SQL Server Management Studio or SQLCMD.exe installed.
 Oracle would need SQLcl.
 
+:::
 
 ## Install the SQL Agent
 
@@ -34,7 +36,9 @@ Oracle would need SQLcl.
 18. Click **Finish** on the **InstallShield Wizard Completed** screen.
 
 :::note
+
 The installation writes the log file named SMA_OpCon_SQL_Agent_Install.log to the Windows directory. Consult this file if any installation problems are suspected.
+
 :::
 
 ## Service startup setup
@@ -42,7 +46,9 @@ The installation writes the log file named SMA_OpCon_SQL_Agent_Install.log to th
 By default, the SMA OpCon Agent for SQL service is set for an Automatic (Delayed Start) startup and for running under the local system account. If you want to change the default settings, perform the procedure in this section.
 
 :::caution
+
 SMA Technologies recommends leaving the SMA OpCon Agent for SQL service set to Automatic (Delayed Start) to avoid potential issues at startup time while other services and programs start up.
+
 :::
 
 ### Set up service startup
