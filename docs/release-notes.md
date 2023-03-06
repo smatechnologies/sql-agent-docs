@@ -1,5 +1,11 @@
 # Release notes
 
+## SQL Agent 20.8.0
+
+2023 March
+
+:white_check_mark: **SQLAG-95**: Fixed an issue with MSSQLAgent Job stuck in "running" state when a database disconnect occurs with SMO library while monitoring running job status. It will refresh the database connection and resume monitoring the job.
+
 ## SQL Agent 20.7.0
 
 2022 April
