@@ -1,5 +1,13 @@
 # Release notes
 
+## SQL Agent 22.0.0
+
+2023 August
+
+:eight_spoked_asterisk: **SQLAG-101**: SQL Agent now uses .Net Framework 4.7.2. It is installed with the agent, if it does not already exist.
+
+:white_check_mark: **SQLAG-96/97**: Fixed a bug in communication logic in the SQL Agent which prevented job completion status messages from getting sent back to Netcom after a network error.
+
 ## SQL Agent 20.8.0
 
 2023 March
