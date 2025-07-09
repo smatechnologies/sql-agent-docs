@@ -1,5 +1,11 @@
 # Release notes
 
+## SQL Agent 22.1.0
+
+2025 July
+
+:eight_spoked_asterisk: **INTPLT-404**: Added connection error information to Job output for other Database (Odbc / OleDb) connections made via SQLAgent.
+
 ## SQL Agent 22.0.0
 
 2023 August
