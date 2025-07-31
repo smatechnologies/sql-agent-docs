@@ -1,5 +1,11 @@
 # Release notes
 
+## SQL Agent 22.2.0
+
+2025 August
+
+:eight_spoked_asterisk: **INTPLT-402**: Fixed memory leak in the Agent which was causing memory usage to reach very high values and required service to be restarted every few weeks.
+
 ## SQL Agent 22.1.0
 
 2025 July
