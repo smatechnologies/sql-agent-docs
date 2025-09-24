@@ -1,5 +1,11 @@
 # Release notes
 
+## SQL Agent 22.4.0
+
+2025 September
+
+:eight_spoked_asterisk: **OCAG-97**: Improved JORS request handling: SQL Agent now validates request parameters and handles malformed requests gracefully, preventing service crashes and ensuring continuous operation.
+
 ## SQL Agent 22.2.0
 
 2025 August
