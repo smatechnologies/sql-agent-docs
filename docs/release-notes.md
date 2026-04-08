@@ -1,5 +1,12 @@
 # Release notes
 
+## SQL Agent 22.5.0
+
+2026 April
+
+:eight_spoked_asterisk: **OCAG-436**: The agent now closes the broken connection and waits for NetCom to reconnect before retrying the queued message. Connection cleanup was also hardened to prevent stale connection state causing Lsam already connected rejections on reconnect.
+Also included: Upgraded .NET Framework requirement from 4.7.2 to 4.8.
+
 ## SQL Agent 22.4.0
 
 2025 September
