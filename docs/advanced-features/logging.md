@@ -1,28 +1,74 @@
+---
+sidebar_label: 'Logging'
+title: Logging
+description: "Log files written by the SQL Agent and how the agent archives and retains them."
+tags:
+  - Conceptual
+  - System Administrator
+  - Advanced features
+---
+
 # Logging
 
-The SQL Agent and its supporting components write several log files to record information. The logs reside in the <Output Directory\>\\SQLAgent\\Log\\ directory.
+## What is it?
+
+The SQL Agent and its supporting components write log files that record service activity, configuration, and (when tracing is on) detailed diagnostic information. Use these logs to:
+
+- Confirm the agent started cleanly.
+- Verify the configuration the agent loaded.
+- Trace SMANetCom messages while troubleshooting.
+- Investigate intermittent failures.
+
+Logs reside in the `<Output Directory>\SQLAgent\Log\` directory. The Output Directory was set during installation.
 
 :::note
-The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+For more information about file locations, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
 :::
 
-The log files include:
+## Log files
 
-- **SQLAgent.log**: The SQL Agent writes processing information to the SQLAgent.log file. Additionally, the SQL Agent writes all configuration information to the log when it starts or when it detects a change to the SQLAgent.ini file.
-- **SQLAgentTrace.log**: If tracing is activated, the [SQL Agent]{.GeneralAgentName} writes detailed messages to the SQLAgentTrace.log file.
+| File | Contents |
+|---|---|
+| **SQLAgent.log** | Agent processing information. Configuration is also written here at startup and whenever the SQL Agent detects a change to SQLAgent.ini. |
+| **SQLAgentTrace.log** | Detailed diagnostic messages. Only written when tracing is activated. |
 
-When log files reach a user-configured maximum size, the SQL Agent archives them. The <Output Directory\>\\SQLAgent\\Log\\Archives\\ folder is the location of all archived log files.
+For details on enabling tracing and tuning log size, see [Debug options](../administration/configuration-file#debug-options) in the SQLAgent.ini reference.
 
-:::note
-The Output Directory was configured during the installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+## Log archiving
+
+When a log file reaches the configured maximum size, the SQL Agent archives it. Archived logs live in `<Output Directory>\SQLAgent\Log\Archives\`.
+
+### Archive folder layout
+
+A folder exists in **Archives** for each day the SQL Agent processes. Folders use the naming convention `yyyy_mm_dd (Weekday)`. For example, the folder for January 11, 2008 would be `2008_01_11 (Friday)`.
+
+### Archive file naming
+
+As each log file fills up, the SQL Agent moves it into the current archive folder and renames it using the convention `LogName StartTime - StopTime.log`. For example, an archive file for the time range of 12:58:16 to 13:58:00 would be `SMAAgent 125816 - 135800.log`.
+
+### Retention
+
+By default, the SQL Agent retains **10 days** of archived logs. Adjust this through the **ArchiveDaysToKeep** setting in SQLAgent.ini.
+
+:::note Manual files block purging
+The SQL Agent does not purge an archive folder if it contains any files other than archived logs. If you copy files into an archive folder for any reason, retention will skip that folder until the extra files are removed.
 :::
 
-A folder exists in the Archives folder for each day the SQL Agent processes. The folder names use the following naming convention: yyyy_mm_dd (Weekday). For example, the folder name for January 11, 2008 would be 2008_01_11 (Friday).
+## FAQs
 
-As each log file fills up, the SQL Agent moves the log file into the current archive folder and renames it using the following naming convention: LogName StartTime - StopTime.log. For example, a SQL Agent archive file for the time range of 12:58:16 to 13:58:00 would be SMAAgent 125816 - 135800.log.
+**Where do SQL Agent log files live?**
+Log files reside in the `<Output Directory>\SQLAgent\Log\` directory. The Output Directory is set during installation.
 
-By default, the SQL Agent retains 10 days of Archived logs. Configure the SQLAgent.ini file to adjust this setting. For information on the Configuration of debug/log settings, refer to [Debug options](../administration/configuration-file#debug-options).
+**How long are archived logs kept by default?**
+By default, the SQL Agent retains 10 days of archived logs. To change this, configure the SQLAgent.ini file.
 
-:::note
-The SQL Agent does not purge any archive folders if any files other than archived files are present.
-:::
+**When does the SQL Agent rotate a log file?**
+When a log file reaches a user-configured maximum size, the SQL Agent moves it into the current archive folder and renames it using the `LogName StartTime - StopTime.log` convention.
+
+**Why aren't my old archive folders being purged?**
+The SQL Agent does not purge an archive folder if any files other than archived files are present in it. Remove non-archive files from the folder so retention can run.
+
+## Related topics
+
+- [SQLAgent.ini file configuration](../administration/configuration-file.md) — Configure log size, retention, and trace settings.
+- [Job Output Retrieval System](./jors.md) — Per-job output capture (separate from agent logs).
