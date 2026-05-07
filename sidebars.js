@@ -1,46 +1,54 @@
 module.exports = {
   mySidebar: [
-    'index',
+    {
+      type: 'doc',
+      id: 'overview',
+      label: 'SQL Agent',
+    },
     'release-notes',
     {
-      type: 'category', 
+      type: 'category',
       label: 'Installation',
-      collapsed: false,
+      collapsed: true,
+      link: { type: 'doc', id: 'installation/overview' },
       items: [
         'installation/determine-installation-media',
         'installation/new-installation',
         'installation/upgrade-installation',
         'installation/silent-mode',
         'installation/multiple-instances',
-      ], 
+      ],
     },
     {
-      type: 'category', 
+      type: 'category',
       label: 'Administration',
-      collapsed: false,
+      collapsed: true,
+      link: { type: 'doc', id: 'administration/overview' },
       items: [
         'administration/service-configuration',
         'administration/configuration-file',
         'administration/manage-lsam',
         'administration/scripts',
-      ], 
+      ],
     },
     {
-      type: 'category', 
+      type: 'category',
       label: 'Advanced features',
-      collapsed: false,
+      collapsed: true,
+      link: { type: 'doc', id: 'advanced-features/overview' },
       items: [
         'advanced-features/jors',
         'advanced-features/logging',
-      ], 
+      ],
     },
     {
-      type: 'category', 
+      type: 'category',
       label: 'Reference',
-      collapsed: false,
+      collapsed: true,
+      link: { type: 'doc', id: 'reference/overview' },
       items: [
         'reference/job-actions',
-      ], 
+      ],
     },
   ],
 };
