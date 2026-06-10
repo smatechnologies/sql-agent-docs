@@ -27,6 +27,7 @@ A complete upgrade has five phases:
 Before you start the upgrade, gather:
 
 - **Local Administrator** sign-in rights for the Windows user running the installer.
+- **.NET Framework 4.8** installed on the machine. The installer will install it if it is not already present.
 - **The OpCon installation media** containing the **SMA OpCon Agent for SQL Install**.exe file.
 - **The "Log on as" credentials** for every agent instance on the machine.
 
@@ -40,24 +41,25 @@ The agent must be idle before you stop the service — otherwise running jobs wi
 
 To verify no jobs are running before the upgrade, complete the following steps:
 
-1. Double-click **Machines Status** under the **Operation** topic. The **Machines Status** screen displays.
-2. Confirm the number of running jobs is **0** for the Windows machine.
-3. If running jobs exist, contact the OpCon administrator about whether to:
-   - Wait for the processes to end, **- or -**
-   - **Kill** the processes on the Windows side.
-4. Repeat step 3 until the **Machines Status** screen indicates **Running Jobs** of `0/<max>`.
-5. Right-click the machine and select **Stop Communication** from the menu.
+1. Go to **Administration** > **Agents** in Solution Manager. The **Agents** screen displays.
+2. Select the agent you are upgrading to view its status.
+3. Confirm the number of running jobs is **0** for the machine.
+4. If running jobs exist, contact the OpCon administrator about whether to:
+   - Wait for the jobs to finish, **- or -**
+   - **Kill** the jobs on the Windows side.
+5. Repeat step 4 until the running job count is `0`.
+6. Right-click the machine and select **Stop Communication** from the menu.
 
 ## Stop the service
 
 To stop the service, complete the following steps:
 
-1. On the Application server, use the menu path: **Start \> Administrative Tools \> Server Manager**. The **Administrative Tools** window displays.
+1. Go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select **Services**. The **Services** window displays.
 4. In the **Services** list, select **SMA OpCon Agent for SQL**.
-5. Use the menu path: **Action \> Stop**.
-6. Confirm the *Service's* **Status** is **Stopped**.
+5. Go to **Action** and select **Stop**.
+6. Confirm the **Status** is **Stopped**.
 
 ## Install the SQL Agent upgrade
 
@@ -69,7 +71,7 @@ To start the installer in upgrade mode, complete the following steps:
 
 1. Sign in to the machine as a Windows user with Local Administrative Rights.
 2. Exit all running applications on the desktop, including any OpCon applications.
-3. Double-click the **SMA OpCon Agent for SQL Install**.exe file in the OpCon installation media. The **Multi-instance Maintenance** screen displays.
+3. Select the **SMA OpCon Agent for SQL Install**.exe file in the OpCon installation media to run it. The **Multi-instance Maintenance** screen displays.
 4. Select the **Maintain or upgrade an existing instance** option.
 5. Select the instance you want to upgrade from the table below the options.
 6. Select **Next**. The **Welcome** screen displays.
@@ -105,23 +107,23 @@ The installer writes a log file named **SMA_OpCon_SQL_Agent_Install.log** to the
 
 To restart the service, complete the following steps:
 
-1. On the Application server, use the menu path: **Start \> Administrative Tools \> Server Manager**. The **Administrative Tools** window displays.
+1. Go to **Start** > **Administrative Tools** > **Server Manager**. The **Administrative Tools** window displays.
 2. Expand (**+**) the **Configuration** option.
 3. Select **Services**. The **Services** window displays.
 4. In the **Services** list, select **SMA OpCon Agent for SQL**.
-5. Use the menu path: **Action \> Start**.
-6. Confirm the *Service's* **Status** is **Started**.
+5. Go to **Action** and select **Start**.
+6. Confirm the **Status** is **Started**.
 
 ## Start communication with the agent
 
 To resume communication between OpCon and the upgraded agent, complete the following steps:
 
-1. Double-click **Machines Status** under the **Operation** topic. The **Machines Status** screen displays.
+1. Go to **Administration** > **Agents** in Solution Manager. The **Agents** screen displays.
 2. Right-click the machine and select **Start Communication** from the menu.
 
 ## Related topics
 
 - [New installation](./new-installation.md) — First-time installation procedure.
-- [Manage the SQL Agent service](../administration/manage-lsam.md) — Start and stop the agent from the Windows Service Control Manager.
+- [Manage the SQL Agent service](../administration/manage-agent.md) — Start and stop the agent from the Windows Service Control Manager.
 - [Service configuration options](../administration/service-configuration.md) — Detailed guidance on running the service as a Local System Account or Domain User.
 - [Release notes](../release-notes.md) — What changed in the version you are upgrading to.

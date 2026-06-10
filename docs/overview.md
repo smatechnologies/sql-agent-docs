@@ -5,6 +5,7 @@ description: "Overview of the SQL Agent for OpCon."
 tags:
   - Conceptual
   - System Administrator
+  - Automation Engineer
   - Agents
 ---
 

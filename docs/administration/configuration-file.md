@@ -31,8 +31,8 @@ The Configuration Directory is set during installation and is based on where you
 These settings must be correct for the agent to communicate with OpCon at all:
 
 - **MaximumNumberOfJobs** — The maximum number of jobs the agent processes concurrently.
-- **SocketNumberToSAM** — The socket the agent uses to communicate with SMANetCom. This **must** match the Socket Number on the Machines screen in the Enterprise Manager.
-- **JORSSocket** — The socket the JORS service uses. This **must** match the JORS Port Number in the Advanced Machine Properties screen in the Enterprise Manager.
+- **SocketNumberToSAM** — The socket the agent uses to communicate with SMANetCom. This **must** match the Socket Number on the Machines page in Solution Manager.
+- **JORSSocket** — The socket the JORS service uses. This **must** match the JORS Port Number in the Advanced Machine Settings in Solution Manager.
 
 If either socket value does not match its OpCon counterpart, jobs cannot start and job output cannot be retrieved.
 
@@ -40,15 +40,12 @@ If either socket value does not match its OpCon counterpart, jobs cannot start a
 
 To modify the SQLAgent.ini file, complete the following steps:
 
-1. Right-click the **Start** button.
-2. Select **Explore** from the menu.
-3. Browse to `<Configuration Directory>\SQLAgent\` for the desired SQL Agent instance.
-4. Find the **SQLAgent.ini** file.
-5. Right-click the file and select **Open With**.
-6. Select an ASCII text editor (e.g., Notepad) from the **Choose the program you want use** list.
-7. In the text editor, make any necessary modifications to the .ini file. For complete information on each setting, see the tables below.
-8. Use the menu path: **File \> Save**.
-9. **Close ☒** the text editor.
+1. Open File Explorer and go to `<Configuration Directory>\SQLAgent\` for the desired SQL Agent instance.
+2. Right-click the **SQLAgent.ini** file and select **Open With**.
+3. Select an ASCII text editor (such as Notepad) from the list.
+4. Make the necessary modifications. For complete information on each setting, see the tables below.
+5. Go to **File** and select **Save**.
+6. Close the text editor.
 
 :::tip Dynamic vs. static settings
 Settings whose **Dynamic** column is **Y** take effect without restarting the agent. Settings marked **N** require a service restart before the change is applied.
@@ -80,7 +77,7 @@ Enter all alphabetic TCP/IP parameter values in uppercase. The SQL Agent service
 
 |[TCP/IP Parameters]|Default|Dynamic|Required|Description|
 |--- |--- |--- |--- |--- |
-|SocketNumberToSAM|21100|N|Y|Defines the socket number through which the agent and the SMANetCom communicate. This number must match the Machine's socket number defined in the Enterprise Manager. If there are multiple agents installed on one machine, each agent must have a unique value. For an up-to-date list of unused ports, please refer to the Internet Assigned Numbers Authority at www.iana.org.|
+|SocketNumberToSAM|21100|N|Y|Defines the socket number through which the agent and the SMANetCom communicate. This number must match the machine's socket number defined in Solution Manager. If there are multiple agents installed on one machine, each agent must have a unique value. For an up-to-date list of unused ports, please refer to the Internet Assigned Numbers Authority at www.iana.org.|
 |AllowedIPAddress_1|ANY|Y|N|Determines if communication from the SMANetCom to the agent is restricted to one or more TCP/IP addresses. If ANY is specified, the agent accepts communication from any TCP/IP address. If a specific TCP/IP address is defined (e.g., 126.40.90.231), the agent only accepts communication from the specified address. The agent refuses a connection if communication is attempted from another address. This definition enhances communication security by refusing communications from other TCP/IP addresses. If multiple SAMs are on a network, this address ensures the agent is only accepting messages from the intended SMANetCom. This parameter is case-sensitive.|
 |AllowedIPAddress_2|Blank|Y|N|Same as Address_1 explanation.|
 |AllowedIPAddress_3|Blank|Y|N|Same as Address_1 explanation.|
@@ -103,9 +100,10 @@ Settings for configuring JORS for job output retrieval.
 
 |[JORS Settings]|Default|Dynamic|Required|Description|
 |--- |--- |--- |--- |--- |
-|JORSSocket|21110|N|Y|Defines the socket number through which the JORS Service communicates. This number must match the JORS Port Number defined in the Enterprise Manager under the Advanced Machine Settings in the Communication Settings category. If there are multiple SQL Agents installed on one machine, each agent's JORS Service must have a unique port. For an up-to-date list of unused ports, please refer to the Internet Assigned Numbers Authority at www.iana.org.|
+|JORSSocket|21110|N|Y|Defines the socket number through which the JORS Service communicates. This number must match the JORS Port Number defined in Solution Manager under **Advanced Machine Settings** > **Communication Settings**. If there are multiple SQL Agents installed on one machine, each agent's JORS Service must have a unique port. For an up-to-date list of unused ports, please refer to the Internet Assigned Numbers Authority at www.iana.org.|
 |MaxJorsFileSize|65536|N|N|The maximum size of a Job Output file retrieved for viewing in OpCon. If the output file is larger than the MaxJorsFileSize, it is truncated when viewed. The minimum and default value is 65536 bytes (64 KB) and the maximum value is 52428800 bytes (50 MB). If an invalid value is specified, the file defaults to 65536.|
 |LogComposition|MIX|N|N|LogComposition only applies when a job output file larger than the MaxJorsFileSize is being viewed. **START** presents MaxJorsFileSize bytes from the start of the file. **END** presents MaxJorsFileSize bytes from the end of the file. **MIX** presents half of MaxJorsFileSize bytes from the start of the file and half from the end.|
+|UseSmoApi|True|N|N|Determines how the agent retrieves output for MS SQL Server Agent jobs. When set to **True** (default), the agent uses the SMO (SQL Server Management Objects) API. When set to **False**, the agent uses a direct T-SQL call to the `sp_help_jobhistory` stored procedure instead. Set to **False** if SMO API performance is slow or unavailable in your environment.|
 
 ## FAQs
 
@@ -120,6 +118,9 @@ Settings whose **Dynamic** column is **Y** take effect without restarting the ag
 
 **What is the maximum value for MaximumNumberOfJobs?**
 The maximum value allowed is 500, although typical customer usage ranges from 10 to 30 jobs.
+
+**What happens when the agent retries a failed job connection?**
+Connection retry behavior is configured per job in the job definition in OpCon (the **Retry Attempts** field). The default is **0** (no retries). When a retry is attempted, the agent waits **5 minutes** (300,000 ms) between each attempt before trying again. These values are controlled in the job definition, not in SQLAgent.ini.
 
 ## Related topics
 

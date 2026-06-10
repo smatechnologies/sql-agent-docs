@@ -148,6 +148,14 @@ Authenticates with the agent's Windows account and runs a script from a `.sql` f
 </TabItem>
 </Tabs>
 
+:::note UseScriptExitCode
+When the **Use Script Exit Code** option is enabled and the job uses an **inline script statement**, the agent wraps the statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd` to return the query result as its process exit code. This option has no effect when the job uses a script file path instead of an inline statement.
+:::
+
+:::note EncryptConnection
+When the **Encrypt Connection** option is enabled in the job definition, the agent adds the `-N` flag to the `sqlcmd` command line, which tells `sqlcmd` to use an encrypted connection for the SQL Server session.
+:::
+
 ---
 
 ## MySQL
@@ -155,6 +163,10 @@ Authenticates with the agent's Windows account and runs a script from a `.sql` f
 Run queries or scripts against MySQL. The example tabs show the most common configurations.
 
 For the field reference, see [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) in the **Concepts** online help.
+
+:::note MySQL default port
+When no port is specified in the job definition, the agent connects to MySQL on the default port **3306**.
+:::
 
 <Tabs groupId="mysql">
 <TabItem value="default-port" label="Default port" default>
@@ -331,6 +343,20 @@ ODBC connection string with an in-line script and environment variables.
 </Tabs>
 
 ---
+
+## FAQs
+
+**What is the difference between MS SQL Job and MS SQL Script?**
+Use **MS SQL Job** to trigger and monitor a pre-existing SQL Server Agent job. Use **MS SQL Script** to run T-SQL directly via `sqlcmd` — either an in-line script or a `.sql` file. MS SQL Script does not require a pre-existing SQL Server Agent job.
+
+**How does the agent retry a failed connection?**
+Retry behavior is configured per job in the job definition's **Retry Attempts** field (default: **0**). When a retry is triggered, the agent waits **5 minutes** between each attempt. The retry count and sleep interval are job-level settings, not agent-level settings.
+
+**What port does MySQL use if I leave the port field blank?**
+The agent connects on the MySQL default port **3306** when no port is specified in the job definition.
+
+**What does "Use Script Exit Code" do for MS SQL Script jobs?**
+When enabled and the job uses an inline script statement, the agent wraps that statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd`'s process exit code to reflect the query result. When disabled, or when the job uses a script file path, the agent uses its own internal exit code logic.
 
 ## Related topics
 

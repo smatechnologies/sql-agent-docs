@@ -14,162 +14,237 @@ tags:
 
 ### 22.5.0
 
-2026 April
+**Released:** 04/2026
 
-:eight_spoked_asterisk: **OCAG-436**: The agent now closes the broken connection and waits for NetCom to reconnect before retrying the queued message. Connection cleanup was also hardened to prevent stale connection state causing Lsam already connected rejections on reconnect. Also included: Upgraded .NET Framework requirement from 4.7.2 to 4.8.
+This release hardens connection recovery behavior and upgrades the .NET Framework requirement.
+
+#### Improvements
+
+- **Improved connection recovery.** The agent now closes a broken connection and waits for SMANetCom to reconnect before retrying queued messages, preventing stale connection state from blocking new connections on reconnect.
+
+#### Upgrade notes
+
+- .NET Framework 4.8 is now required. The installer will install it if it is not already present on the machine.
+
+---
 
 ### 22.4.0
 
-2025 September
+**Released:** 09/2025
 
-:eight_spoked_asterisk: **OCAG-97**: Improved JORS request handling: SQL Agent now validates request parameters and handles malformed requests gracefully, preventing service crashes and ensuring continuous operation.
+This release improves stability of the Job Output Retrieval System (JORS).
+
+#### Improvements
+
+- **Improved JORS request handling.** The agent now validates JORS request parameters and handles malformed requests without crashing, ensuring the JORS service remains available for job output retrieval.
+
+---
 
 ### 22.2.0
 
-2025 August
+**Released:** 08/2025
 
-:eight_spoked_asterisk: **INTPLT-402**: Fixed memory leak in the Agent which was causing memory usage to reach very high values and required service to be restarted every few weeks.
+This release resolves a long-standing memory issue affecting high-volume environments.
+
+#### Bug fixes
+
+- **Fixed a memory leak** that caused memory usage to grow over time and required periodic service restarts. Environments processing large numbers of jobs will see stable memory consumption between restarts.
+
+---
 
 ### 22.1.0
 
-2025 July
+**Released:** 07/2025
 
-:eight_spoked_asterisk: **INTPLT-404**: Added connection error information to Job output for other Database (Odbc / OleDb) connections made via SQLAgent.
+This release adds diagnostic information to ODBC and OLE DB job output.
+
+#### Improvements
+
+- **Added connection error details to job output** for Other DB (ODBC and OLE DB) jobs. When a connection fails, the error information is now written to job output, making it easier to diagnose database connectivity problems without reviewing agent logs.
+
+---
 
 ### 22.0.0
 
-2023 August
+**Released:** 08/2023
 
-:eight_spoked_asterisk: **SQLAG-101**: SQL Agent now uses .Net Framework 4.7.2. It is installed with the agent, if it does not already exist.
+This release updates the .NET Framework requirement and resolves a communication issue.
 
-:white_check_mark: **SQLAG-96/97**: Fixed a bug in communication logic in the SQL Agent which prevented job completion status messages from getting sent back to Netcom after a network error.
+#### Improvements
+
+- **Updated .NET Framework requirement to 4.7.2.** The framework is installed with the agent if it is not already present.
+
+#### Bug fixes
+
+- **Fixed an issue where job completion status messages were not sent to SMANetCom after a network error.** Jobs that completed during a network disruption now report their final status correctly when the connection is restored.
+
+---
 
 ## 20
 
 ### 20.8.0
 
-2023 March
+**Released:** 03/2023
 
-:white_check_mark: **SQLAG-95**: Fixed an issue with MSSQLAgent Job stuck in "running" state when a database disconnect occurs with SMO library while monitoring running job status. It will refresh the database connection and resume monitoring the job.
+#### Bug fixes
+
+- **Fixed an issue where an MS SQL Server Agent job remained in a running state** after a database disconnect occurred while the agent was monitoring job status. The agent now refreshes the database connection and resumes monitoring automatically.
+
+---
 
 ### 20.7.0
 
-2022 April
+**Released:** 04/2022
 
-:white_check_mark: **SQLAG-94**: Fixed an issue in SQL Agent where a job completion on SQL Server side was not always communicated back to the OpCon side.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-93**: Fixed an issue in SQL Agent where an Oracle job failed if it had "Other Options" specified.
+- **Fixed an issue where job completion was not always communicated back to OpCon** when a SQL Server Agent job finished. Job statuses are now reliably reported.
+- **Fixed an issue where an Oracle job failed when the Other Options field was populated.** Oracle jobs with additional options now run as expected.
+
+---
 
 ### 20.6.0
 
-2021 November
+**Released:** 11/2021
 
-:white_check_mark: **SQLAG-92**: Fixed an issue where a network disruption (socket close) event that is not received by the SQL agent, causes the agent to repeatedly send messages to OpCon, and flood its max messages queue, instead of closing and listening to new connection requests.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-91**: Fixed an issue where SQL Agent did not drop a connection if a disconnect event did not trigger and so it would never allow new connections to it.
+- **Fixed an issue where a network disruption caused the agent to flood its outbound message queue.** When the agent does not receive a socket close event, it now closes the connection and listens for new requests instead of retrying indefinitely.
+- **Fixed an issue where the agent did not close a dropped connection**, preventing new connections from being accepted. The agent now detects stale connections and closes them correctly.
+
+---
 
 ### 20.5.0
 
-2021 June
+**Released:** 06/2021
 
-:white_check_mark: **SQLAG-89**: Fixed an issue in SQL Agent where Windows logon sessions were not getting cleaned up and resulted in an increase in time to stop the agent service after a large load of Windows Auth jobs run through it and more memory consumption by the Windows Logon Management process (lsass.exe).
+#### Bug fixes
+
+- **Fixed an issue where Windows logon sessions were not cleaned up** after Windows Authentication jobs ran. The fix reduces the time required to stop the agent service in high-volume environments and reduces memory consumption by the Windows Logon Management process.
+
+---
 
 ### 20.4.0
 
-2021 June
+**Released:** 06/2021
 
-:white_check_mark: **SQLAG-88**: Fixed an issue in the SQL Agent to retry accessing tracking files if they are locked by another process without loosing any messages there, which could result in jobs not being tracked in OpCon.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-87**: Fixed an issue in SQLAgent where it took a long time to retrieve SQL Server jobs output via SMO API. A config option ('usesmoapi', default set to 'true') now allows the agent to use a direct call to fetch the job output from SQL Server job, when the option is set to 'false'.
+- **Fixed an issue where jobs could be lost if tracking files were locked** by another process. The agent now retries file access until the lock is released, preventing jobs from being dropped from OpCon tracking.
+- **Fixed a performance issue with MS SQL Server Agent job output retrieval** using the SMO API. A new configuration option (`UseSmoApi` in the JORS Settings section of SQLAgent.ini) allows the agent to use a direct stored procedure call instead of the SMO API when set to `False`. The default is `True`.
+- **Fixed a memory growth issue** that occurred when multiple jobs failed during initialization. Memory is now released correctly after initialization failures.
 
-:white_check_mark: **SQLAG-86**: Fixed an issue where SQL Agent increased its memory usage over time, if several jobs failed during initialization.
+---
 
 ### 20.3.0
 
-2021 April
+**Released:** 04/2021
 
-:white_check_mark: **SQLAG-85**: Fixed an issue in SQL Agent where fetching the output of a SQL job had performance problems. Now appropriate filtering to fetch job information significantly improves the performance.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-4**: Fixed an issue where the SQL Agent failed to capture a quick running job's status before its completion resulting in a "NullReferenceException".
+- **Fixed a performance issue with SQL Server Agent job output retrieval.** The agent now applies more precise filtering when fetching job history, significantly reducing retrieval time.
+- **Fixed an issue where a fast-finishing job's status was not captured**, resulting in a null reference error. The agent now handles rapid job completion correctly.
+- **Fixed an issue where the agent shut down unexpectedly** when restarting with jobs still in the tracking file. Restart behavior is now stable when jobs are in progress.
+- **Fixed an issue where the agent stopped processing new messages** after a connection was dropped and re-established. The agent now refreshes its outbound message context with the new connection.
 
-:white_check_mark: **SQLAG-84**: Fixed an issue in SQL Agent where a restart of the agent while there are jobs in the tracking file, sometimes resulted in the agent shutting down.
-
-:white_check_mark: **SQLAG-83**: Fixed an issue in SQL Agent where it was unable to process new messages due to a connection refresh problem. When a connection to the agent is dropped and a new one is established, now the agent refreshes the outgoing message context with the new connection.
+---
 
 ### 20.2.0
 
-2021 February
+**Released:** 02/2021
 
-:white_check_mark: **SQLAG-80**: Fixed an issue in SQL agent where a DTExec job for ISSERVER had problems impersonating a Windows domain user.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-79**: Fixed an issue in SQL Agent where a long schedule or job name resulted in an error creating job output files as its name passed the max length allowed. Now truncated names are used to limit the number of characters so this error can't happen.
+- **Fixed an issue where a DTExec (SSIS) job could not impersonate a Windows domain user** when the package was stored on an Integration Services Server (ISSERVER). Domain user impersonation now works correctly for ISSERVER packages.
+- **Fixed an issue where a long schedule or job name caused an error** when creating job output files. Names that exceed the file system limit are now truncated automatically.
+
+---
 
 ### 20.1.0
 
-2020 December
+**Released:** 12/2020
 
-:white_check_mark: **SQLAG-75**: Fixed an issue in SQL Agent where communication to Netcom stopped if the agent was marked down and up in OpCon while jobs were running.
+#### Bug fixes
 
-:white_check_mark: **SQLAG-70**: Fixed an issue in SQL Agent where the agent did not communicate back to OpCon due to tracking file locking issues and not correctly initializing the connection with SMANetcom after it got dropped off.
+- **Fixed an issue where agent communication to SMANetCom stopped** if the agent was marked down and then up in OpCon while jobs were running. Communication resumes correctly after the agent is brought back online.
+- **Fixed a tracking file locking issue** that prevented the agent from communicating back to OpCon and from correctly reinitializing the connection after it was dropped. Connection handling is now reliable after reconnects.
+- **Fixed an issue where the batch user running a SQL job required local administrator privileges** on the agent machine in order to impersonate the job user. Batch users no longer need administrator privileges.
+- **Fixed an issue where an unhandled exception in the user impersonation logic** caused the agent to crash. The exception is now handled and the agent remains running.
 
-:white_check_mark: **SQLAG-69**: Fixed an issue in SQL Agent where the user running the SQL job needed admin privileges on the SQL agent machine to impersonate the user. Now, the batch user won't need admin privileges.
-
-:white_check_mark: **SQLAG-68**: Fixed an issue with SQL Agent where an unhandled exception in the user impersonation logic brought down the agent.
+---
 
 ### 20.0.0
 
-2020 August
+**Released:** 08/2020
 
-:eight_spoked_asterisk: SQL Agent is now able to run SSIS packages using MS SQL DTExec job action using Windows Authentication.
+This release adds Windows Authentication support for SSIS packages and support for Integration Services Server.
 
-:eight_spoked_asterisk: SQL Agent now allows running SSIS packages on Integration Services Server (ISSERVER).
+#### New features
 
-:white_check_mark: Fixed an issue where the SQL Agent would fail to process non-ASCII characters for Job Output Retrieval System (JORS) requests.
+- **Added Windows Authentication support for MS SQL DTExec jobs.** SSIS packages run via `dtexec` can now authenticate using the Windows account of the executing user rather than requiring SQL Server credentials.
+- **Added Integration Services Server (ISSERVER) support for MS SQL DTExec jobs.** SSIS packages stored on an Integration Services Server can now be run directly from OpCon.
 
-:white_check_mark: Fixed an issue where a colon in SQL agent job name caused a file not found error when fetching job output.
+#### Bug fixes
 
-:white_check_mark: Fixed an issue in SQL Agent where it did not track SQL Server jobs after an agent restart.
+- **Fixed an issue where non-ASCII characters in JORS requests caused failures.** Job output retrieval now works correctly for jobs with names or paths that contain non-ASCII characters.
+- **Fixed an issue where a colon in a job name caused a file not found error** when fetching job output. Job names with colons are now handled correctly by the output file naming logic.
+- **Fixed an issue where SQL Server Agent jobs were not tracked after an agent restart.** Jobs that were running when the agent restarted are now correctly re-tracked after the agent comes back online.
+
+---
 
 ## 18
 
 ### 18.3.2
 
-2019 March
+**Released:** 03/2019
 
-:white_check_mark: Fixed an issue with the SQL Agent where memory usage increased each time a job ran and never decreased.
+#### Bug fixes
 
-:white_check_mark: Fixed an issue where the SQL Agent would not check for all possible failure conditions after attempting to start a SQL Agent job on the SQL Server.
+- **Fixed a memory leak** that caused memory usage to increase each time a job ran and never decrease. Memory is now released correctly after each job completes.
+- **Fixed an issue where not all failure conditions were checked** after attempting to start a SQL Server Agent job. The agent now checks the full set of failure conditions before reporting job status.
+
+---
 
 ### 18.3.1
 
-2018 December
+**Released:** 12/2018
 
-:white_check_mark: Fixed an issue with the SQL Agent where a DataReader error was thrown and a job would fail with no retry attempted when trying to query the job status within MSSQLServer, but the job in MSSQLServer was still running and eventually went on to finish successfully.
+#### Bug fixes
+
+- **Fixed an issue where a DataReader error caused a SQL Server Agent job to fail** even when the job on the SQL Server side was still running and eventually completed successfully. The agent now correctly handles transient DataReader errors and continues monitoring the job.
+
+---
 
 ### 18.3.0
 
-2018 November
+**Released:** 11/2018
 
-:white_check_mark: Fixed an issue with the SMA OpCon Agent for SQL service where sometimes it was stuck in a Started status when the actual status was Running.
+#### Bug fixes
 
-:white_check_mark: Fixed an issue with the SQL Agent where the agent allowed concurrent connections from multiple SMANetComs.
+- **Fixed an issue where the SQL Agent service reported a Started status** when it was actually in a Running state. Service status is now reported accurately.
+- **Fixed an issue where the agent accepted concurrent connections from multiple SMANetCom instances.** The agent now correctly accepts only one connection at a time.
+- **Fixed an issue where the agent did not close a connection properly** and accepted a second connection while already connected, instead of refusing it. Connection handling now enforces single-connection behavior.
+- **Fixed a null reference exception in the tracking file logic.** Tracking files are now read without throwing unhandled exceptions.
+- **Fixed an issue where the job output archive directory was not cleaned correctly.** The archive folder is now purged on schedule as configured by `ArchiveDaysToKeep`.
 
-:white_check_mark: Fixed an issue with the SQL Agent where the agent would not close a connection properly and would then accept a second connection while already connected to a service instead of refusing the second connection.
-
-:white_check_mark: Fixed an issue with the tracking files where a "System.NullReferenceException: Object reference not set to an instance of an object" error would be thrown.
-
-:white_check_mark: Fixed an issue with the SQL Agent where the JobOutput/Archives directory was not correctly cleaned.
+---
 
 ### 18.1.0
 
-2018 June
+**Released:** 06/2018
 
-:white_check_mark: Fixed an issue where the Connector Framework (.Net) had a defect in MonitorEndOffset handling. If the job user had a custom decimal separator (other than a period) defined in the Windows regional settings, the SQL Agent job ran into the error: "Invalid type in job XML. Integer expected, received: 0.0." The defect is fixed in version 18.1.0.0 of the SQL Agent and Connector Framework (.Net).
+#### Bug fixes
+
+- **Fixed an issue where jobs failed with an "Invalid type in job XML" error** when the Windows regional settings on the agent machine used a non-period decimal separator. The MonitorEndOffset value is now parsed correctly regardless of the machine's regional settings.
+
+---
 
 ## 17
 
 ### 17.1.4
 
-2018 July
+**Released:** 07/2018
 
-:white_check_mark: Fixed an issue where the Connector Framework (.Net) had a defect in MonitorEndOffset handling. If the job user had a custom decimal separator (other than a period) defined in the Windows regional settings, the SQL Agent job ran into the error: "Invalid type in job XML. Integer expected, received: 0.0." The defect is fixed in version 17.1.4 of the SQL Agent and Connector Framework (.Net).
+#### Bug fixes
+
+- **Fixed an issue where jobs failed with an "Invalid type in job XML" error** when the Windows regional settings on the agent machine used a non-period decimal separator. This is the same fix as in version 18.1.0, backported to the version 17 line.
