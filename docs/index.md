@@ -44,7 +44,7 @@ The SQL Agent is an OpCon agent that allows OpCon to schedule SQL queries or job
 
 - [Service configuration](./administration/service-configuration.md)
 - [Configuration file](./administration/configuration-file.md)
-- [Manage the agent](./administration/manage-lsam.md)
+- [Manage the agent](./administration/manage-agent.md)
 - [InitializationScript and TerminationScript](./administration/scripts.md)
 
 </div>

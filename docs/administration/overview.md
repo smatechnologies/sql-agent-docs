@@ -20,12 +20,12 @@ This section covers day-to-day administration of the SQL Agent. Use these pages 
 |---|---|
 | Choose the account the service runs as | [Service configuration](./service-configuration.md) |
 | Look up or change a setting in SQLAgent.ini | [Configuration file](./configuration-file.md) |
-| Start or stop the agent service | [Manage the agent](./manage-lsam.md) |
+| Start or stop the agent service | [Manage the agent](./manage-agent.md) |
 | Map network drives the agent needs | [InitializationScript and TerminationScript](./scripts.md) |
 
 ## In this section
 
 - [Service configuration](./service-configuration.md) — Configuration options for the SQL Agent service logon, including running as the Local System Account or as a Windows Domain User.
 - [Configuration file](./configuration-file.md) — Reference for the SQLAgent.ini configuration file, including general settings, TCP/IP parameters, debug options, and JORS settings.
-- [Manage the agent](./manage-lsam.md) — Procedures for starting and stopping the SQL Agent service from the Windows Service Control Manager.
+- [Manage the agent](./manage-agent.md) — Procedures for starting and stopping the SQL Agent service from the Windows Service Control Manager.
 - [InitializationScript and TerminationScript](./scripts.md) — How to use the InitializationScript and TerminationScript to map and unmap network resources.
