@@ -8,6 +8,9 @@ tags:
   - Installation
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # New installation
 
 ## What is it?
@@ -113,7 +116,10 @@ After the agent is installed, create a machine record in OpCon so the scheduler 
 
 ### Create the machine in OpCon
 
-To create the machine in OpCon, complete the following sub-procedures in order.
+Select the tab for your OpCon client and complete the sub-procedures in order.
+
+<Tabs groupId="opcon-ui">
+<TabItem value="sm" label="Solution Manager" default>
 
 #### Sign in to Solution Manager
 
@@ -149,6 +155,49 @@ To start communication with the agent, complete the following steps:
 
 1. On the **Agents** screen, locate the agent you just created.
 2. Right-click the agent and select **Start Communication** from the menu.
+
+</TabItem>
+<TabItem value="em" label="Enterprise Manager">
+
+#### Sign in to Enterprise Manager
+
+To sign in, complete the following steps:
+
+1. Go to **Start** > **Programs** > **OpConxps** > **Enterprise Manager**. The **OpCon Login** screen displays.
+2. Enter a *case-sensitive User Login ID* (e.g., `ocadm`) in the **Username** field.
+3. Enter the *case-sensitive password for the user* in the **Password** field.
+4. Select the **profile** in the **Profile** list.
+5. Select **Login**.
+
+#### Add the machine record
+
+To add the machine record, complete the following steps:
+
+1. Select **Machines** under the **Administration** topic in the Navigation Panel. The **Machines** screen displays.
+2. Select **Add** on the **Machines** toolbar.
+3. Enter the *official host name or alias based on the agent machine* in the **Name** field.
+4. Enter *any relevant documentation* for this agent machine in the **Documentation** field.
+5. Select **SQL** in the **Machine Type** list.
+6. Set the *value* to a unique number (e.g., `21100`) in the **Socket Number** box.
+
+   :::caution Match the agent configuration
+   The socket number entered here must match the socket entered in the agent configuration file. If the values do not match, OpCon cannot communicate with the agent.
+   :::
+
+7. *(Optional)* Enter the *IPv4 or IPv6 address* in the **IP Address** field.
+8. *(Optional)* Enter the *name* in the **Fully Qualified Domain Name** field.
+9. Select **Save** on the **Machines** toolbar.
+
+#### Configure advanced settings and start communication
+
+To configure optional advanced settings and start communication with the agent, complete the following steps:
+
+1. *(Optional)* Select **Open Advanced Settings Panel** and review and update as necessary. Select the **Advanced Options** save button to store any changes.
+2. Right-click the graphic in the **Communication Status** frame and select **Start Communication** from the menu.
+3. Select the **x** to the right of the **Machines** tab to close the **Machines** screen.
+
+</TabItem>
+</Tabs>
 
 ## Related topics
 

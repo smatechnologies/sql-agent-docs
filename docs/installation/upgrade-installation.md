@@ -8,6 +8,9 @@ tags:
   - Installation
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Upgrade installation
 
 ## What is it?
@@ -39,9 +42,12 @@ Before proceeding, check the services settings for "Log on as" in the service's 
 
 The agent must be idle before you stop the service — otherwise running jobs will not have a chance to report their final status back to OpCon.
 
+<Tabs groupId="opcon-ui">
+<TabItem value="sm" label="Solution Manager" default>
+
 To verify no jobs are running before the upgrade, complete the following steps:
 
-1. Go to **Administration** > **Agents** in Solution Manager. The **Agents** screen displays.
+1. Go to **Administration** > **Agents**. The **Agents** screen displays.
 2. Select the agent you are upgrading to view its status.
 3. Confirm the number of running jobs is **0** for the machine.
 4. If running jobs exist, contact the OpCon administrator about whether to:
@@ -49,6 +55,22 @@ To verify no jobs are running before the upgrade, complete the following steps:
    - **Kill** the jobs on the Windows side.
 5. Repeat step 4 until the running job count is `0`.
 6. Right-click the machine and select **Stop Communication** from the menu.
+
+</TabItem>
+<TabItem value="em" label="Enterprise Manager">
+
+To verify no jobs are running before the upgrade, complete the following steps:
+
+1. Select **Machines Status** under the **Operation** topic in the Navigation Panel. The **Machines Status** screen displays.
+2. Confirm the number of running jobs is **0** for the machine.
+3. If running jobs exist, contact the OpCon administrator about whether to:
+   - Wait for the jobs to finish, **- or -**
+   - **Kill** the jobs on the Windows side.
+4. Repeat step 3 until the **Machines Status** screen shows **Running Jobs** of `0/<max>`.
+5. Right-click the machine and select **Stop Communication** from the menu.
+
+</TabItem>
+</Tabs>
 
 ## Stop the service
 
@@ -116,10 +138,24 @@ To restart the service, complete the following steps:
 
 ## Start communication with the agent
 
+<Tabs groupId="opcon-ui">
+<TabItem value="sm" label="Solution Manager" default>
+
 To resume communication between OpCon and the upgraded agent, complete the following steps:
 
-1. Go to **Administration** > **Agents** in Solution Manager. The **Agents** screen displays.
+1. Go to **Administration** > **Agents**. The **Agents** screen displays.
 2. Right-click the machine and select **Start Communication** from the menu.
+
+</TabItem>
+<TabItem value="em" label="Enterprise Manager">
+
+To resume communication between OpCon and the upgraded agent, complete the following steps:
+
+1. Select **Machines Status** under the **Operation** topic in the Navigation Panel. The **Machines Status** screen displays.
+2. Right-click the machine and select **Start Communication** from the menu.
+
+</TabItem>
+</Tabs>
 
 ## Related topics
 
