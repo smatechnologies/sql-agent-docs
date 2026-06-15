@@ -27,16 +27,14 @@ Start the agent after a stop, after a reboot if the service did not auto-start, 
 
 To start the SQL Agent, complete the following steps:
 
-1. Use the menu path: **Start \> Control Panel**.
-2. Double-click **Administrative Tools**.
-3. Double-click **Services** to run the Service Control Manager.
-4. Double-click **SMA OpCon Agent for SQL** in the **Services** list. The **SMA OpCon Agent for SQL Properties** dialog displays.
-5. Confirm that the *Service's* **Startup Type** is set to **Automatic (Delayed Start)**. If it is not, change the Startup type with the following steps:
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
+2. Select **SMA OpCon Agent for SQL** in the **Services** list. The **SMA OpCon Agent for SQL Properties** dialog displays.
+3. Confirm that the **Startup Type** is set to **Automatic (Delayed Start)**. If it is not, complete the following steps:
    1. Select **Automatic (Delayed Start)** from the **Startup Type** list.
    2. Select **OK**.
-6. Use the menu path: **Action \> Start**.
-7. Confirm the *Service's* **Status** is **Started**.
-8. **Close ☒** the **Services** window.
+4. Go to **Action** and select **Start**.
+5. Confirm the **Status** is **Started**.
+6. Close the **Services** window.
 
 :::tip Why Automatic (Delayed Start)?
 Delayed Start lets other system services and dependencies finish initializing before the SQL Agent comes up, which avoids a class of startup-timing failures. SMA Technologies recommends this setting.
@@ -52,13 +50,11 @@ Stopping the service while jobs are running can leave those jobs without final s
 
 To stop the SQL Agent, complete the following steps:
 
-1. Use the menu path: **Start \> Control Panel**.
-2. Double-click **Administrative Tools**.
-3. Double-click **Services** to run the Service Control Manager.
-4. Select **SMA OpCon Agent for SQL** in the **Services** list.
-5. Use the menu path: **Action \> Stop**.
-6. Confirm the *agent's* **Status** is **Stopped**.
-7. **Close ☒** the **Services** window.
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
+2. Select **SMA OpCon Agent for SQL** in the **Services** list.
+3. Go to **Action** and select **Stop**.
+4. Confirm the **Status** is **Stopped**.
+5. Close the **Services** window.
 
 ## Related topics
 

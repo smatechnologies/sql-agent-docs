@@ -8,6 +8,9 @@ tags:
   - Installation
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # New installation
 
 ## What is it?
@@ -25,6 +28,7 @@ A complete install has three phases:
 Before you start the installer, make sure the machine has:
 
 - **Local Administrator** sign-in rights for the Windows user running the installer.
+- **.NET Framework 4.8** installed on the machine. The installer will install it if it is not already present.
 - **The OpCon installation media** containing the **SMA OpCon Agent for SQL Install**.exe file.
 - **A management studio or command-line client** for the database the agent will run jobs against.
 
@@ -43,7 +47,7 @@ To start the installer, complete the following steps:
 
 1. Sign in to the Windows machine as a Local Administrator.
 2. Exit all running applications on the desktop, including any OpCon applications.
-3. Double-click the **SMA OpCon Agent for SQL Install**.exe file in the OpCon installation media. The *language* screen displays.
+3. Select the **SMA OpCon Agent for SQL Install**.exe file in the OpCon installation media to run it. The *language* screen displays.
 4. Select the desired language for the installation screens and select **OK**. The **Welcome** screen displays.
 
 ### Configure paths, instance name, and ports
@@ -93,20 +97,18 @@ Use the procedure below if you need to change the startup type or the account th
 
 To set up service startup, complete the following steps:
 
-1. On the Application server, use the menu path: **Start \> Control Panel \> Administrative Tools**.
-2. Select **Administrative Tools**. The **Administrative Tools** window displays.
-3. Double-click **Services**. The **Services** window displays.
-4. Double-click the newly installed **SMA OpCon Agent for SQL** service. The **SMA OpCon Agent for SQL Properties** dialog displays with the **General** tab in focus.
-5. Select the **Service Startup type**:
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
+2. Select the newly installed **SMA OpCon Agent for SQL** service. The **SMA OpCon Agent for SQL Properties** dialog displays with the **General** tab in focus.
+3. Select the **Service Startup type**:
     - **Automatic (Delayed Start)** *(recommended)*
     - **Automatic**
     - **Manual**
     - **Disabled**
-6. Select the **Log On** tab.
-7. Select one of the following two **Log on as** options for the service:
+4. Select the **Log On** tab.
+5. Select one of the following two **Log on as** options for the service:
     - **Local System account** — Select this option if the service will run as the local system account. Selecting it deletes the default Domain User displayed in the field.
     - **This account** — Select this option if the service needs access to network directories. Enter the *Domain User* in the field, enter the *Password* for the Domain User, and re-enter the *Password* to confirm.
-8. Select **OK**.
+6. Select **OK**.
 
 ## Machine creation
 
@@ -114,23 +116,64 @@ After the agent is installed, create a machine record in OpCon so the scheduler 
 
 ### Create the machine in OpCon
 
-To create the machine in OpCon, complete the following sub-procedures in order.
+Select the tab for your OpCon client and complete the sub-procedures in order.
 
-#### Sign in to Enterprise Manager
+<Tabs groupId="opcon-ui">
+<TabItem value="sm" label="Solution Manager" default>
+
+#### Sign in to Solution Manager
 
 To sign in, complete the following steps:
 
-1. Use the menu path: **Start \> Programs \> OpConxps \> Enterprise Manager**. The **OpCon Login** screen displays.
+1. Open Solution Manager in your browser and enter the URL provided by your OpCon administrator.
 2. Enter a *case-sensitive User Login ID* (e.g., `ocadm`) in the **Username** field.
 3. Enter the *case-sensitive password for the user* in the **Password** field.
-4. Select the **profile** in the **Profile** list.
-5. Select **Login** to sign in to Enterprise Manager.
+4. Select **Login**.
 
 #### Add the machine record
 
 To add the machine record, complete the following steps:
 
-1. Double-click **Machines** under the **Administration** topic in the Navigation Panel. The **Machines** screen displays.
+1. Go to **Administration** > **Agents**. The **Agents** screen displays.
+2. Select **Add** to create a new agent record.
+3. Enter the *official host name or alias based on the agent machine* in the **Name** field.
+4. Enter *any relevant documentation* for this agent machine in the **Documentation** field.
+5. Select **SQL** in the **Machine Type** list.
+6. Set the *value* to a unique number (e.g., `21100`) in the **Socket Number** box.
+
+   :::caution Match the agent configuration
+   The socket number entered here must match the socket entered in the agent configuration file. If the values do not match, OpCon cannot communicate with the agent.
+   :::
+
+7. *(Optional)* Enter the *IPv4 or IPv6 address* in the **IP Address** field.
+8. *(Optional)* Enter the *name* in the **Fully Qualified Domain Name** field.
+9. Select **Save**.
+
+#### Start communication
+
+To start communication with the agent, complete the following steps:
+
+1. On the **Agents** screen, locate the agent you just created.
+2. Right-click the agent and select **Start Communication** from the menu.
+
+</TabItem>
+<TabItem value="em" label="Enterprise Manager">
+
+#### Sign in to Enterprise Manager
+
+To sign in, complete the following steps:
+
+1. Go to **Start** > **Programs** > **OpConxps** > **Enterprise Manager**. The **OpCon Login** screen displays.
+2. Enter a *case-sensitive User Login ID* (e.g., `ocadm`) in the **Username** field.
+3. Enter the *case-sensitive password for the user* in the **Password** field.
+4. Select the **profile** in the **Profile** list.
+5. Select **Login**.
+
+#### Add the machine record
+
+To add the machine record, complete the following steps:
+
+1. Select **Machines** under the **Administration** topic in the Navigation Panel. The **Machines** screen displays.
 2. Select **Add** on the **Machines** toolbar.
 3. Enter the *official host name or alias based on the agent machine* in the **Name** field.
 4. Enter *any relevant documentation* for this agent machine in the **Documentation** field.
@@ -149,16 +192,16 @@ To add the machine record, complete the following steps:
 
 To configure optional advanced settings and start communication with the agent, complete the following steps:
 
-1. *(Optional)* Select **Open Advanced Settings Panel** and review and update as necessary:
-    - Select the Advanced Options save button to store all changes.
-2. *(Optional)* Start communication with the machine by:
-    - Right-clicking the graphic to enable the menu in the **Communication Status** frame.
-    - Selecting **Start Communication** from the menu.
+1. *(Optional)* Select **Open Advanced Settings Panel** and review and update as necessary. Select the **Advanced Options** save button to store any changes.
+2. Right-click the graphic in the **Communication Status** frame and select **Start Communication** from the menu.
 3. Select the **x** to the right of the **Machines** tab to close the **Machines** screen.
+
+</TabItem>
+</Tabs>
 
 ## Related topics
 
 - [SQLAgent.ini file configuration](../administration/configuration-file.md) — Where to find and edit the agent configuration file.
 - [Service configuration options](../administration/service-configuration.md) — Detailed guidance on running the service as a Local System Account or Domain User.
-- [Manage the SQL Agent service](../administration/manage-lsam.md) — How to start and stop the agent after installation.
+- [Manage the SQL Agent service](../administration/manage-agent.md) — How to start and stop the agent after installation.
 - [Multiple instances](./multiple-instances.md) — Install additional SQL Agent instances on the same machine.

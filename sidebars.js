@@ -27,7 +27,7 @@ module.exports = {
       items: [
         'administration/service-configuration',
         'administration/configuration-file',
-        'administration/manage-lsam',
+        'administration/manage-agent',
         'administration/scripts',
       ],
     },

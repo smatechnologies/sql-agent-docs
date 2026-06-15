@@ -17,9 +17,9 @@ The SQL Agent service can run under two different account types, and the choice 
 - **Local System Account** *(recommended)* — The agent has all of the system-level privileges it needs without extra configuration. Manage access to UNC paths and shared drives through the user account that runs the job and through startup scripts defined in the SQLAgent.ini file.
 - **Windows Domain User** — Choose this only when site policy or specific network access requirements rule out Local System.
 
-In Local System mode, be sure to select a Windows User account from your network for the Windows User Id in the Job Definitions in the Enterprise Manager.
+In Local System mode, select a Windows User account from your network for the Windows User ID in the job definition in Solution Manager.
 
-For information on configuring mapped network drives in the SQLAgent.ini file, see [Using the InitializationScript and TerminationScript](scripts). For information on entering a Windows User, refer to [Adding a Batch User for SQL](https://help.smatechnologies.com/opcon/core/rolling/Files/UI/Enterprise-Manager/Adding%20Batch%20Users.htm#Adding2) in the **Enterprise Manager** online help.
+For information on configuring mapped network drives in the SQLAgent.ini file, see [Using the InitializationScript and TerminationScript](scripts). For information on adding a batch user for SQL, refer to [Adding a Batch User for SQL](https://help.smatechnologies.com/opcon/core/rolling/Files/UI/Enterprise-Manager/Adding%20Batch%20Users.htm#Adding2) in the **OpCon** online help.
 
 ## Run the SQL Agent as the Local System Account
 
@@ -35,15 +35,13 @@ The Local System Account must have the following advanced Windows privileges:
 
 To configure the SQL Agent to run as a Local System Account, complete the following steps:
 
-1. Use the menu path: **Start \> Control Panel**.
-2. Double-click **Administrative Tools**.
-3. Double-click **Services** to run the Service Control Manager.
-4. Double-click the agent in the **Services** list. The **Properties** dialog displays.
-5. If not selected already, select **Automatic (Delayed Start)** from the **Startup Type** list.
-6. Select the **Log On** tab.
-7. Select the **Local System account** option.
-8. Select **OK**.
-9. **Close ☒** the **Services** window.
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
+2. Select the SQL Agent service from the **Services** list. The **Properties** dialog displays.
+3. If not selected already, select **Automatic (Delayed Start)** from the **Startup Type** list.
+4. Select the **Log On** tab.
+5. Select the **Local System account** option.
+6. Select **OK**.
+7. Close the **Services** window.
 
 ## Run the SQL Agent as a Windows Domain User
 
@@ -65,42 +63,38 @@ The domain user must have:
 The domain user must have signed in to this machine at least once before you start the service. The initial sign-in creates the Windows user profile that the SQL Agent needs in order to run as a Domain User.
 :::
 
-Please refer to the Domain Administrator about acquiring the appropriate privileges.
+Contact your domain administrator to acquire the required privileges.
 
 ### Add advanced Windows privileges
 
 To add the required advanced Windows privileges, complete the following steps:
 
-1. Use the menu path: **Start \> Control Panel**.
-2. Double-click **Administrative Tools**.
-3. Double-click **Local Security Policy** to run the Local security settings editor.
-4. Double-click **Local Policies** under **Security Settings** and select **User Rights Assignment**.
-5. Double-click each privilege from the list above and select **Add User Or Group**.
-6. In the **Select Users Or Groups** dialog, select **Locations** and choose the machine or domain depending on whether you are adding a Local user or a Domain user.
-7. In the object name field, enter the name of the user. To add the Local System Account, choose the current machine and enter `SYSTEM` in the object name field.
-8. Repeat steps 6 and 7 for each privilege.
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Local Security Policy**.
+2. Under **Security Settings**, select **Local Policies** > **User Rights Assignment**.
+3. For each privilege in the list above, select the privilege and select **Add User Or Group**.
+4. In the **Select Users Or Groups** dialog, select **Locations** and choose the machine or domain depending on whether you are adding a local user or a domain user.
+5. In the object name field, enter the name of the user. To add the Local System Account, choose the current machine and enter `SYSTEM`.
+6. Repeat steps 3 through 5 for each privilege.
 
 ### Configure the SQL Agent to run as a Domain User
 
 To configure the SQL Agent to run as a Domain User, complete the following steps:
 
-1. Use the menu path: **Start \> Control Panel**.
-2. Double-click **Administrative Tools**.
-3. Double-click **Services** to run the Service Control Manager.
-4. Double-click the agent in the **Services** list. The **Properties** dialog displays.
-5. If not selected already, select **Automatic (Delayed Start)** from the **Startup Type** list.
-6. Select the **Log On** tab.
-7. Select the **This account** option.
-8. Select **Browse** to find the Domain User.
-9. Select the Domain User.
-10. Select **OK**.
-11. Enter the password in the **Password** field.
-12. Re-enter the password in the **Confirm Password** field.
-13. Select **OK**.
-14. **Close ☒** the **Services** window.
+1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
+2. Select the SQL Agent service from the **Services** list. The **Properties** dialog displays.
+3. If not selected already, select **Automatic (Delayed Start)** from the **Startup Type** list.
+4. Select the **Log On** tab.
+5. Select the **This account** option.
+6. Select **Browse** to find the domain user.
+7. Select the domain user.
+8. Select **OK**.
+9. In the **Password** field, enter the password.
+10. In the **Confirm Password** field, re-enter the password.
+11. Select **OK**.
+12. Close the **Services** window.
 
 ## Related topics
 
-- [Manage the SQL Agent service](./manage-lsam.md) — Start and stop the service after changing the logon account.
+- [Manage the SQL Agent service](./manage-agent.md) — Start and stop the service after changing the logon account.
 - [InitializationScript and TerminationScript](./scripts.md) — Map network drives the agent needs in either logon mode.
 - [SQLAgent.ini file configuration](./configuration-file.md)
