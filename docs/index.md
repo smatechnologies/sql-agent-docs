@@ -1,6 +1,13 @@
 ---
 slug: '/'
 sidebar_label: 'SQL Agent'
+title: SQL Agent
+description: "OpCon agent that allows OpCon to schedule SQL queries or jobs within a Windows environment against databases such as MS SQL Server, MySQL, Oracle, ODBC/OLE DB, and SSIS. Covers installation, administration, advanced features, and reference."
+tags:
+  - Conceptual
+  - System Administrator
+  - Automation Engineer
+  - Agents
 hide_table_of_contents: true
 displayed_sidebar: null
 ---

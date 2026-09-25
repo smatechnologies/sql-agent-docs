@@ -30,13 +30,25 @@ For the full field-by-field reference, see [SQL Job Details](https://help.smatec
 | [MS SQL DTExec](#ms-sql-dtexec) | Running SSIS packages with `dtexec` | [Fields for MS SQL DTExec](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_DTExec) |
 | [MS SQL Job](#ms-sql-job) | Triggering SQL Server Agent jobs | [Fields for MS SQL Job](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Job) |
 | [MS SQL Script](#ms-sql-script) | Running ad-hoc T-SQL or script files | [Fields for MS SQL Script](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Script) |
-| [MySQL](#mysql) | Running queries or scripts against MySQL | [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) |
-| [Oracle](#oracle) | Running queries or scripts against Oracle | [Fields for Oracle](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Oracle) |
+| [MySQL](#mysql) | Running script files against MySQL | [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) |
+| [Oracle](#oracle) | Running script files against Oracle with SQL*Plus | [Fields for Oracle](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Oracle) |
 | [Other DB](#other-db) | ODBC or OLE DB connections to any other database | [Fields for Other DB](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Other_DB) |
 
 :::tip How to use this page
 Each job-type section uses **tabs** to switch between configuration variants. Pick the tab that matches your scenario rather than scrolling through every variant.
 :::
+
+## How the agent runs every job action
+
+These rules apply across the job actions. Differences between actions are noted in each section.
+
+| Topic | Behavior |
+|---|---|
+| Account the job runs as | If the job's **Windows User ID** is set, the job runs as that Windows user and the **Password** field holds that user's Windows password. The agent does not pass a database password in that case. If **Windows User ID** is empty, or begins with `USE SERVICE ACCOUNT`, the job runs as the SQL Agent service account. |
+| Encrypted values | Any part of the server name, password, database name, script statements, script path, output file path, other options, Oracle parameters, connection string, or environment variable names and values can be entered between `<SmaEncrypt>` and `</SmaEncrypt>`. The agent decrypts each such part before it builds the command. |
+| Environment variables | Each action uses them differently: MS SQL Script sets them in the job's process environment; MySQL defines each one as a MySQL user variable (`@NAME`); Other DB replaces `$(NAME)` in the script text with the value; Oracle and MS SQL DTExec do not use them. |
+| Encrypt Connection | Applies to MS SQL Script only, where the agent adds `-N` to the `sqlcmd` command line. The other actions do not use it. |
+| Client programs | MS SQL Script, MS SQL DTExec, MySQL, and Oracle run `SqlCmd.exe`, `DtExec.exe`, `MySql.exe`, and `SqlPlus.exe`. Each program must be installed and on the PATH of the account the job runs as. Other DB and MS SQL Job connect from inside the agent. |
 
 ---
 
@@ -102,6 +114,23 @@ Start and monitor a job, overriding the saved credentials with a password suppli
 </TabItem>
 </Tabs>
 
+### How the agent monitors an MS SQL Job
+
+- **Monitor only.** When the job definition is set to monitor only, the agent does not start the SQL Server Agent job. It watches the job and reports its outcome. For every MS SQL Job, the agent checks the job's status every 10 seconds.
+- **Monitor end time.** The end time is a number of hours after the start of the schedule date. When that time is reached, the agent reports the OpCon job as finished with exit code `0`, even if the SQL Server Agent job is still running. The SQL Server Agent job is not stopped.
+- **Retry Attempts.** If the agent connects but the SQL Server is not available, it waits 5 minutes and tries again, up to the number of retry attempts in the job definition (default `0`). An error while connecting is not retried. The 5-minute wait is fixed.
+
+The agent reports the SQL Server Agent job's outcome as the exit code:
+
+| Exit code | SQL Server Agent job outcome |
+|---|---|
+| `0` | Succeeded |
+| `1` | Failed |
+| `2` | Retry |
+| `3` | Cancelled |
+| `4` | In progress |
+| `5` | Unknown |
+
 ---
 
 ## MS SQL Script
@@ -141,7 +170,7 @@ Specifies an output file path and applies a password overwrite at runtime.
 </TabItem>
 <TabItem value="winauth-file" label="Windows Auth + script file">
 
-Authenticates with the agent's Windows account and runs a script from a `.sql` file.
+Uses a trusted Windows connection and runs a script from a `.sql` file. The connection uses the job's Windows User ID, or the SQL Agent service account when no Windows User ID is set.
 
 ![Defining MS SQL Script with Windows Authentication and Script File](../static/img/Defining-MS-SQL-Script-with-Windows-Authentication-and-Script-File.png "Defining MS SQL Script with Windows Authentication and Script File")
 
@@ -149,23 +178,23 @@ Authenticates with the agent's Windows account and runs a script from a `.sql` f
 </Tabs>
 
 :::note UseScriptExitCode
-When the **Use Script Exit Code** option is enabled and the job uses an **inline script statement**, the agent wraps the statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd` to return the query result as its process exit code. This option has no effect when the job uses a script file path instead of an inline statement.
+When the **Use Script Exit Code** option is enabled and the job uses an **inline script statement**, the agent wraps the statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd` to return the query result as its process exit code. This option has no effect when the job uses a script file path instead of an inline statement. In every case, the job's exit code is the `sqlcmd` exit code; the agent always adds `-b`, so `sqlcmd` returns an error exit code when a statement fails.
 :::
 
 :::note EncryptConnection
-When the **Encrypt Connection** option is enabled in the job definition, the agent adds the `-N` flag to the `sqlcmd` command line, which tells `sqlcmd` to use an encrypted connection for the SQL Server session.
+When the **Encrypt Connection** option is enabled in the job definition, the agent adds the `-N` flag to the `sqlcmd` command line, which tells `sqlcmd` to use an encrypted connection for the SQL Server session. The option applies to MS SQL Script only.
 :::
 
 ---
 
 ## MySQL
 
-Run queries or scripts against MySQL. The example tabs show the most common configurations.
+Run a script file against MySQL. The agent runs the file in **Script File Path**; it does not run statements entered in the job definition. The example tabs show the most common configurations.
 
 For the field reference, see [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) in the **Concepts** online help.
 
 :::note MySQL default port
-When no port is specified in the job definition, the agent connects to MySQL on the default port **3306**.
+When no port is specified in the job definition, the agent does not pass a port to `MySql.exe`, so the MySQL client's own default port is used.
 :::
 
 <Tabs groupId="mysql">
@@ -185,7 +214,7 @@ Overrides the saved password at runtime.
 </TabItem>
 <TabItem value="envvars" label="Environment variables">
 
-Runs a script file and substitutes environment variables into the SQL.
+Runs a script file with environment variables. The agent defines each variable as a MySQL user variable before it runs the script, so the script refers to it as `@NAME`.
 
 **Script File Path:** `C:\SQLScripts\mysql_insert_params.sql`
 
@@ -204,7 +233,7 @@ Insert into address (Lastname, Firstname, Address) values (@LN, @FN, @ADS);
 
 ## Oracle
 
-Run jobs against Oracle. The tabs cover the most common parameter and connection patterns.
+Run a script file against Oracle with SQL*Plus (`SqlPlus.exe`). The agent runs the file in **Script File Path**; it does not run statements entered in the job definition. The tabs cover the most common parameter and connection patterns.
 
 For the field reference, see [Fields for Oracle](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Oracle) in the **Concepts** online help.
 
@@ -232,7 +261,7 @@ Passes encrypted parameters into the Oracle job.
 </TabItem>
 <TabItem value="connection-id" label="Connection ID">
 
-References a saved Oracle connection by ID rather than entering the connection details inline.
+Adds the Connection ID to the connection. With a **Server Name**, a numeric Connection ID is used as the port (`<server>:<ID>`). Without a **Server Name**, the Connection ID is used as the Oracle connect identifier (`@<ID>`).
 
 ![Defining Oracle with Connection ID](../static/img/Defining-Oracle-with-Connection-ID.png "Defining Oracle with Connection ID")
 
@@ -350,13 +379,16 @@ ODBC connection string with an in-line script and environment variables.
 Use **MS SQL Job** to trigger and monitor a pre-existing SQL Server Agent job. Use **MS SQL Script** to run T-SQL directly via `sqlcmd` — either an in-line script or a `.sql` file. MS SQL Script does not require a pre-existing SQL Server Agent job.
 
 **How does the agent retry a failed connection?**
-Retry behavior is configured per job in the job definition's **Retry Attempts** field (default: **0**). When a retry is triggered, the agent waits **5 minutes** between each attempt. The retry count and sleep interval are job-level settings, not agent-level settings.
+Only MS SQL Job jobs retry. If the agent connects but the SQL Server is not available, it waits 5 minutes and tries again, up to the job definition's **Retry Attempts** (default: **0**). The 5-minute wait is fixed. An error while connecting is not retried. See [How the agent monitors an MS SQL Job](#how-the-agent-monitors-an-ms-sql-job).
 
 **What port does MySQL use if I leave the port field blank?**
-The agent connects on the MySQL default port **3306** when no port is specified in the job definition.
+The agent does not pass a port, so the MySQL client uses its own default port.
 
 **What does "Use Script Exit Code" do for MS SQL Script jobs?**
-When enabled and the job uses an inline script statement, the agent wraps that statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd`'s process exit code to reflect the query result. When disabled, or when the job uses a script file path, the agent uses its own internal exit code logic.
+When enabled and the job uses an inline script statement, the agent wraps that statement in `EXIT(statement)` when calling `sqlcmd`, causing `sqlcmd`'s process exit code to reflect the query result. In every other case the job's exit code is still the `sqlcmd` exit code.
+
+**Can MySQL or Oracle jobs run statements entered in the job definition?**
+No. For MySQL and Oracle, the agent runs only the script file in **Script File Path**. Put the statements in a script file.
 
 ## Related topics
 

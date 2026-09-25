@@ -30,11 +30,15 @@ Before you start the installer, make sure the machine has:
 - **Local Administrator** sign-in rights for the Windows user running the installer.
 - **.NET Framework 4.8** installed on the machine. The installer will install it if it is not already present.
 - **The OpCon installation media** containing the **SMA OpCon Agent for SQL Install**.exe file.
-- **A management studio or command-line client** for the database the agent will run jobs against.
+- **The command-line client** for each database the agent will run jobs against, installed and on the PATH of the account each job runs as. A management studio on its own is not enough.
 
-:::tip Examples of supported clients
-- **MS SQL Server**: SQL Server Management Studio or `SQLCMD.exe`.
-- **Oracle**: SQLcl.
+:::tip Client programs the agent runs
+- **MS SQL Script**: `SqlCmd.exe`
+- **MS SQL DTExec**: `DtExec.exe`
+- **MySQL**: `MySql.exe`
+- **Oracle**: SQL*Plus (`SqlPlus.exe`). SQLcl is not used.
+
+MS SQL Job and Other DB jobs connect from inside the agent and need no client program.
 :::
 
 ## Install the SQL Agent
@@ -80,7 +84,7 @@ To run the installation, complete the following steps:
 5. Select **Finish** on the **InstallShield Wizard Completed** screen.
 
 :::note Troubleshooting
-The installer writes a log file named **SMA_OpCon_SQL_Agent_Install.log** to the Windows directory. Consult this file if you suspect any installation problems.
+The installer writes a log file named **SMA_OpCon_Agent_SQL_Install.log** to the Windows directory. Consult this file if you suspect any installation problems.
 :::
 
 ## Service startup setup
@@ -98,7 +102,7 @@ Use the procedure below if you need to change the startup type or the account th
 To set up service startup, complete the following steps:
 
 1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
-2. Select the newly installed **SMA OpCon Agent for SQL** service. The **SMA OpCon Agent for SQL Properties** dialog displays with the **General** tab in focus.
+2. Select the newly installed **SMA OpCon Agent for SQL** service. The **SMA OpCon Agent for SQL Properties** window displays with the **General** tab in focus.
 3. Select the **Service Startup type**:
     - **Automatic (Delayed Start)** *(recommended)*
     - **Automatic**
@@ -116,7 +120,7 @@ After the agent is installed, create a machine record in OpCon so the scheduler 
 
 ### Create the machine in OpCon
 
-Select the tab for your OpCon client and complete the sub-procedures in order.
+Select the tab for your OpCon interface and complete the sub-procedures in order.
 
 <Tabs groupId="opcon-ui">
 <TabItem value="sm" label="Solution Manager" default>

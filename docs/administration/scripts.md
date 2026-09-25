@@ -67,17 +67,17 @@ net send machine/username "Agent Stopped"
 
 ## Job environment variables
 
-When the SQL Agent starts a cmd-based job (MS SQL Script, MySQL, Oracle, ODBC, OLE DB), it sets the following environment variables in the job's process environment. Scripts invoked as the job body (`.sql` or `.bat` files run by the agent) can read these variables.
+When the SQL Agent starts a job that runs a command-line client (MS SQL Script, MS SQL DTExec, MySQL, Oracle), it sets the following environment variables in the job's process environment. MS SQL Job and Other DB (ODBC and OLE DB) jobs run inside the agent and do not receive them. Scripts invoked as the job body (`.sql` or `.bat` files run by the agent) can read these variables.
 
 :::caution Not available in InitializationScript or TerminationScript
 These variables are set per-job at the time a job process starts. InitializationScript and TerminationScript run at service start/stop — no job is running at that point, so none of these variables are available in those scripts.
 :::
 
-The agent sets two parallel groups of variables: one for the impersonated (batch) user context and one for the system account context.
+The agent sets one of two groups of variables, depending on the account the job runs as: the `SMA_` group when the job runs as its Windows User ID, or the `SMA_MSLSAM_` group when it runs as the SQL Agent service account. A script that must work in both cases should check for both names.
 
-### Impersonated user context
+### Job runs as its Windows User ID
 
-These variables are available in the impersonated user's process environment.
+The agent sets these variables when the job definition has a **Windows User ID**.
 
 | Variable | Description |
 |---|---|
@@ -88,9 +88,9 @@ These variables are available in the impersonated user's process environment.
 | `SMA_SCHEDULE_FREQ` | The schedule frequency name for the job. |
 | `SMA_JOBOUTPUT_FILENAME` | The full path to the job output file for the current run. |
 
-### System account context
+### Job runs as the service account
 
-These variables are set in the system account's process environment. They carry the same values as the impersonated user context variables.
+The agent sets these variables instead when the job has no **Windows User ID**, or when it begins with `USE SERVICE ACCOUNT`. They carry the same information as the `SMA_` group.
 
 | Variable | Description |
 |---|---|

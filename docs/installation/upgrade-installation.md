@@ -122,7 +122,7 @@ To run the upgrade, complete the following steps:
 6. Reconfigure the service "Log on as" settings using the credentials you captured in *Before you begin*.
 
 :::note Troubleshooting
-The installer writes a log file named **SMA_OpCon_SQL_Agent_Install.log** to the Windows directory. Consult this file if you suspect any installation problems.
+The installer writes a log file named **SMA_OpCon_Agent_SQL_Install.log** to the Windows directory. Consult this file if you suspect any installation problems.
 :::
 
 ## Restart the service
