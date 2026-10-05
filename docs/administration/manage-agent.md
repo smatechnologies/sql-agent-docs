@@ -28,7 +28,7 @@ Start the agent after a stop, after a reboot if the service did not auto-start, 
 To start the SQL Agent, complete the following steps:
 
 1. Go to **Start** > **Control Panel** > **Administrative Tools** > **Services**.
-2. Select **SMA OpCon Agent for SQL** in the **Services** list. The **SMA OpCon Agent for SQL Properties** dialog displays.
+2. Select **SMA OpCon Agent for SQL** in the **Services** list. The **SMA OpCon Agent for SQL Properties** window displays.
 3. Confirm that the **Startup Type** is set to **Automatic (Delayed Start)**. If it is not, complete the following steps:
    1. Select **Automatic (Delayed Start)** from the **Startup Type** list.
    2. Select **OK**.

@@ -181,7 +181,7 @@ This release adds Windows Authentication support for SSIS packages and support f
 
 #### New features
 
-- **Added Windows Authentication support for MS SQL DTExec jobs.** SSIS packages run via `dtexec` can now authenticate using the Windows account of the executing user rather than requiring SQL Server credentials.
+- **Added Windows Authentication support for MS SQL DTExec jobs.** SSIS packages run via `dtexec` can now authenticate using the Windows account of the user running the job rather than requiring SQL Server credentials.
 - **Added Integration Services Server (ISSERVER) support for MS SQL DTExec jobs.** SSIS packages stored on an Integration Services Server can now be run directly from OpCon.
 
 #### Bug fixes
