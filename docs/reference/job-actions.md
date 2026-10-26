@@ -21,18 +21,18 @@ This page lists the job types supported by the SQL Agent and shows reference exa
 - Compare configuration options for a single job type at a glance.
 - Find a worked example to base a new job on.
 
-For the full field-by-field reference, see [SQL Job Details](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL%20Job%20Details.htm) in the **Concepts** online help.
+For the full field-by-field reference, see [SQL Job Details](https://help.smatechnologies.com/opcon/core/job-types/sql) in the **Concepts** online help.
 
 ## Job action quick reference
 
 | Job action | Use it for | Field reference |
 |---|---|---|
-| [MS SQL DTExec](#ms-sql-dtexec) | Running SSIS packages with `dtexec` | [Fields for MS SQL DTExec](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_DTExec) |
-| [MS SQL Job](#ms-sql-job) | Triggering SQL Server Agent jobs | [Fields for MS SQL Job](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Job) |
-| [MS SQL Script](#ms-sql-script) | Running ad-hoc T-SQL or script files | [Fields for MS SQL Script](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Script) |
-| [MySQL](#mysql) | Running script files against MySQL | [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) |
-| [Oracle](#oracle) | Running script files against Oracle with SQL*Plus | [Fields for Oracle](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Oracle) |
-| [Other DB](#other-db) | ODBC or OLE DB connections to any other database | [Fields for Other DB](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Other_DB) |
+| [MS SQL DTExec](#ms-sql-dtexec) | Running SSIS packages with `dtexec` | [Fields for MS SQL DTExec](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-dtexec) |
+| [MS SQL Job](#ms-sql-job) | Triggering SQL Server Agent jobs | [Fields for MS SQL Job](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-job) |
+| [MS SQL Script](#ms-sql-script) | Running ad-hoc T-SQL or script files | [Fields for MS SQL Script](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-script) |
+| [MySQL](#mysql) | Running script files against MySQL | [Fields for MySQL](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-mysql) |
+| [Oracle](#oracle) | Running script files against Oracle with SQL*Plus | [Fields for Oracle](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-oracle) |
+| [Other DB](#other-db) | ODBC or OLE DB connections to any other database | [Fields for Other DB](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-other-db) |
 
 :::tip How to use this page
 Each job-type section uses **tabs** to switch between configuration variants. Pick the tab that matches your scenario rather than scrolling through every variant.
@@ -56,7 +56,7 @@ These rules apply across the job actions. Differences between actions are noted 
 
 Run SQL Server Integration Services (SSIS) packages through `dtexec`. Choose the connection type tab that matches how your packages are stored — file system or SQL Server.
 
-For the field reference, see [Fields for MS SQL DTExec](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_DTExec) in the **Concepts** online help.
+For the field reference, see [Fields for MS SQL DTExec](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-dtexec) in the **Concepts** online help.
 
 <Tabs groupId="dtexec-connection">
 <TabItem value="file" label="FILE Connection" default>
@@ -81,7 +81,7 @@ Use **SQL** when the SSIS package is stored in MS SQL Server.
 
 Start a SQL Server Agent job and control how the SQL Agent monitors it. Each tab shows a different monitoring strategy or option.
 
-For the field reference, see [Fields for MS SQL Job](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Job) in the **Concepts** online help.
+For the field reference, see [Fields for MS SQL Job](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-job) in the **Concepts** online help.
 
 <Tabs groupId="mssql-job-mode">
 <TabItem value="completion" label="Monitor until completion" default>
@@ -137,7 +137,7 @@ The agent reports the SQL Server Agent job's outcome as the exit code:
 
 Run T-SQL against MS SQL Server. The script can be written in line in the job definition or pulled from a `.sql` file. Pick the tab that matches how you want the script and any runtime values supplied.
 
-For the field reference, see [Fields for MS SQL Script](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MS_SQL_Script) in the **Concepts** online help.
+For the field reference, see [Fields for MS SQL Script](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-ms-sql-script) in the **Concepts** online help.
 
 <Tabs groupId="mssql-script">
 <TabItem value="inline" label="In Line Script" default>
@@ -191,7 +191,7 @@ When the **Encrypt Connection** option is enabled in the job definition, the age
 
 Run a script file against MySQL. The agent runs the file in **Script File Path**; it does not run statements entered in the job definition. The example tabs show the most common configurations.
 
-For the field reference, see [Fields for MySQL](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_MySQL) in the **Concepts** online help.
+For the field reference, see [Fields for MySQL](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-mysql) in the **Concepts** online help.
 
 :::note MySQL default port
 When no port is specified in the job definition, the agent does not pass a port to `MySql.exe`, so the MySQL client's own default port is used.
@@ -235,7 +235,7 @@ Insert into address (Lastname, Firstname, Address) values (@LN, @FN, @ADS);
 
 Run a script file against Oracle with SQL*Plus (`SqlPlus.exe`). The agent runs the file in **Script File Path**; it does not run statements entered in the job definition. The tabs cover the most common parameter and connection patterns.
 
-For the field reference, see [Fields for Oracle](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Oracle) in the **Concepts** online help.
+For the field reference, see [Fields for Oracle](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-oracle) in the **Concepts** online help.
 
 <Tabs groupId="oracle">
 <TabItem value="output-pwd" label="Output file + password" default>
@@ -274,7 +274,7 @@ Adds the Connection ID to the connection. With a **Server Name**, a numeric Conn
 
 Connect to any database through ODBC or OLE DB. Use this job action when the database isn't covered by one of the dedicated job types above. The three sub-sections below correspond to the three connection methods.
 
-For the field reference, see [Fields for Other DB](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/SQL-Job-Details.md#Fields_for_Other_DB) in the **Concepts** online help.
+For the field reference, see [Fields for Other DB](https://help.smatechnologies.com/opcon/core/job-types/sql#fields-for-other-db) in the **Concepts** online help.
 
 ### DSN Name connections
 

@@ -22,7 +22,7 @@ The SQL Agent and its supporting components write log files that record service 
 Logs reside in the `<Output Directory>\SQL Agent\Log\` directory. The Output Directory was set during installation.
 
 :::note
-For more information about file locations, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+For more information about file locations, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Reference** online help.
 :::
 
 ## Log files

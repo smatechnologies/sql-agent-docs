@@ -23,7 +23,7 @@ The **SQLAgent.ini** file is the SQL Agent's configuration file. The agent reads
 The SQLAgent.ini file lives in the `<Configuration Directory>\SQL Agent\` directory.
 
 :::note
-The Configuration Directory is set during installation and is based on where you installed your programs. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+The Configuration Directory is set during installation and is based on where you installed your programs. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Reference** online help.
 :::
 
 ## Critical settings
@@ -41,7 +41,7 @@ If either socket value does not match its OpCon counterpart, jobs cannot start a
 To modify the SQLAgent.ini file, complete the following steps:
 
 1. Open File Explorer and go to `<Configuration Directory>\SQL Agent\` for the desired SQL Agent instance.
-2. Right-click the **SQLAgent.ini** file and select **Open With**.
+2. Open the context menu for the **SQLAgent.ini** file and select **Open With**.
 3. Select an ASCII text editor (such as Notepad) from the list.
 4. Make the necessary modifications. For complete information on each setting, see the tables below.
 5. Go to **File** and select **Save**.

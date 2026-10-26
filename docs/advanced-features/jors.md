@@ -39,7 +39,7 @@ The agent creates one log file per job containing all of the captured informatio
 | `<Output Directory>\SQL Agent\JobOutput\Archives\<date>\` | `<date>` is the date the job started, in the form `yyyy_MM_dd (Weekday)`. The agent writes the file there while the job runs. |
 
 :::note
-The Output Directory was set during installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/rolling/Files/Concepts/File%20Locations.htm) in the **Concepts** online help.
+The Output Directory was set during installation. For more information, refer to [File Locations](https://help.smatechnologies.com/opcon/core/file-locations) in the **Reference** online help.
 :::
 
 The SQL Agent cleans up archived JobOutput folders based on the **ArchiveDaysToKeep** setting under Debug Options. Logs older than ArchiveDaysToKeep are removed at midnight.
