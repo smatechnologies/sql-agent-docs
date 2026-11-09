@@ -10,6 +10,20 @@ tags:
 
 # SQL Agent release notes
 
+## 23
+
+### 23.0.0
+
+**Released:** 11/2026
+
+### What's new
+
+:eight_spoked_asterisk: **OCAG-1400**: Added automatic TLS certificate management for the SQL Agent, so certificates are requested, installed, and renewed automatically without manual intervention.
+
+:eight_spoked_asterisk: **OCAG-1462**: Updated the SQL Agent's supporting components to run on a modern .NET runtime.
+
+:eight_spoked_asterisk: **OCAG-1458**: Added the ability to remotely upgrade the SQL Agent directly from Solution Manager, without needing to run the installer manually on the agent machine.
+
 ## 22
 
 ### 22.5.0
